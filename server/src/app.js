@@ -1,35 +1,37 @@
 'use strict'
 
-require('app-module-path').addPath(__dirname)
+const path = require('path')
+require('app-module-path').addPath(path.resolve(__dirname))
 
 const Express = require('express')
 const {
   initializerModels,
   initializerSeed,
-  initializerSequelize
+  initializerSequelize,
+  initializerMiddlewares,
+  initializerRoutes
 } = require('initializers')
-const bodyParser = require('body-parser')
-const cors = require('cors')
-const morgan = require('morgan')
-const config = require('config/config')
+
+const config = require('config')
+const { app: logger } = require('utils/logger')
 
 const main = async () => {
-  console.log('main')
+  const { port } = config.get('express')
+  logger.info('main', { port })
+
   const app = new Express()
-  app.use(morgan('combined'))
-  app.use(bodyParser.json())
-  app.use(cors())
 
-  require('./routes')(app)
-
-  await initializerSequelize()
-  await initializerModels()
-  await initializerSeed()
+  await initializerSequelize(app)
+  await initializerModels(app)
+  await initializerSeed(app)
+  await initializerMiddlewares(app)
+  await initializerRoutes(app)
 
   await new Promise((resolve, reject) => app
-    .listen(config.port, resolve)
+    .listen(port, resolve)
     .on('error', reject))
 
-  console.log('main -> done')
+  logger.info('main -> done')
 }
-main().catch(console.error)
+
+main().catch((err) => logger.error('Uncaught expection %j', err))

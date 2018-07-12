@@ -3,23 +3,24 @@
 const sequelize = require('utils/sequelize')
 const { User, Marker } = require('models')
 const Chance = require('chance')
+const config = require('config')
+const { app: logger } = require('utils/logger')
 
 const chance = new Chance()
 
-const USER_NUM = 15
-
 const initializerSeed = async () => {
-  console.log('initializerSeed')
+  const { numUsers } = config.get('db.seed')
+  logger.info('initializerSeed %j', { numUsers })
 
   const userNum = await User.count()
 
   if (userNum) {
-    console.log('initializerSeed -> seed executed earlier')
+    logger.info('initializerSeed -> seed executed earlier')
     return
   }
 
   await sequelize.transaction(async (transaction) => {
-    for (let i = 0; i < USER_NUM; i++) {
+    for (let i = 0; i < numUsers; i++) {
       const marker = await Marker.create({
         lat: chance.latitude({min: 51, max: 52}),
         lng: chance.longitude({min: 39, max: 40})
@@ -34,7 +35,7 @@ const initializerSeed = async () => {
       await user.save({ transaction })
     }
   })
-  console.log('initializerSeed -> done')
+  logger.info('initializerSeed -> done')
 }
 
 module.exports = initializerSeed

@@ -1,18 +1,17 @@
-const { User, Marker } = require('../models/')
+'use strict'
 
-module.exports = {
-  async list (req, res) {
-    try {
-      const users = await User.findAll({
-        include: [
-          { model: Marker }
-        ]
-      })
-      res.send(users)
-    } catch (err) {
-      res.status(500).send({
-        error: 'an error has occured trying to fetch the songs.'
-      })
-    }
-  }
-}
+const express = require('express')
+const { User, Marker } = require('models')
+
+const router = new express.Router()
+
+router.get('/', async (req, res) => {
+  const users = await User.findAll({
+    include: [
+      { model: Marker }
+    ]
+  })
+  res.json(users)
+})
+
+module.exports = router

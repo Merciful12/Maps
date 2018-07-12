@@ -1,13 +1,14 @@
 'use strict'
 
 const sequelize = require('utils/sequelize')
+const { app: logger } = require('utils/logger')
 
 const initializerSequelize = async () => {
-  console.log('initializerSequelize')
+  logger.info('initializerSequelize')
 
   await sequelize.authenticate()
 
-  console.log('initializerSequelize -> done')
+  logger.info('initializerSequelize -> done')
 }
 
 module.exports = initializerSequelize
