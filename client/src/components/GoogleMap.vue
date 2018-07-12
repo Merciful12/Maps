@@ -41,9 +41,9 @@
         <gmap-marker
           :key="index"
           v-for="(m, index) in users"
-          :position="m.position"
+          :position="m.Marker"
           :clickable="true"
-          @click="toggleInfoWindow(m,i)"
+          @click="toggleInfoWindow(m, index)"
         ></gmap-marker>
       </gmap-map>
       </b-col>
@@ -55,8 +55,8 @@
           class="mb-2"
         >
           <h4>name: {{user.name}}</h4>
-          <p>position lat: {{user.position.lat}}<br>
-          position lng: {{user.position.lng}}</p>
+          <p>position lat: {{user.Marker.lat}}<br>
+          position lng: {{user.Marker.lng}}</p>
         </div>
       </b-col>
     </b-row>
@@ -67,38 +67,16 @@
 </template>
 
 <script>
+import UserService from '@/services/UserService'
 export default {
   name: 'GoogleMap',
+  async mounted () {
+    this.users = (await UserService.list()).data
+  },
   data () {
     return {
       center: {lat: 51.6754966, lng: 39.20888230000003},
-      users: [
-        {
-          'position': {
-            'lat': 51.71763107561683,
-            'lng': 39.16837021503909
-          },
-          'name': 'Ferdinand'
-        }, {
-          'position': {
-            'lat': 51.72954078110515,
-            'lng': 39.208195654492215
-          },
-          'name': 'Alex'
-        }, {
-          'position': {
-            'lat': 51.70359060911277,
-            'lng': 39.19034287128909
-          },
-          'name': 'John'
-        }, {
-          'position': {
-            'lat': 51.68954578407677,
-            'lng': 39.14983078632815
-          },
-          'name': 'Mike'
-
-        }],
+      users: null,
       places: [],
       currentPlace: null,
       infoContent: '',
@@ -148,7 +126,7 @@ export default {
       this.currentPlace = this.center
     },
     toggleInfoWindow: function (marker, idx) {
-      this.infoWindowPos = marker.position
+      this.infoWindowPos = marker.Marker
       this.infoContent = marker.name
       if (this.currentMidx === idx) {
         this.infoWinOpen = !this.infoWinOpen

@@ -20,17 +20,18 @@ const initializerSeed = async () => {
 
   await sequelize.transaction(async (transaction) => {
     for (let i = 0; i < USER_NUM; i++) {
-      const user = await User.create({
+      const marker = await Marker.create({
+        lat: chance.latitude({min: 51, max: 52}),
+        lng: chance.longitude({min: 39, max: 40})
+      }, { transaction })
+      const user = User.build({
         name: chance.first(),
         email: chance.email(),
         password: chance.string({ length: 8 })
-      }, { transaction })
-      const marker = Marker.build({
-        lat: chance.latitude({min: 51, max: 52}),
-        lng: chance.longitude({min: 39, max: 40})
       })
-      marker.setUser = (user, { save: false })
-      await marker.save({ transaction })
+      user.setMarker(marker, { save: false })
+
+      await user.save({ transaction })
     }
   })
   console.log('initializerSeed -> done')

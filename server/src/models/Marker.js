@@ -1,19 +1,17 @@
 'use strict'
 
-const User = require('./User')
 const sequelize = require('utils/sequelize')
 const Sequelize = require('sequelize')
 
 const schema = {
   lat: {
-    type: Sequelize.STRING
+    type: Sequelize.DOUBLE
   },
   lng: {
-    type: Sequelize.STRING
+    type: Sequelize.DOUBLE
   }
 }
 
 const Marker = sequelize.define('Marker', schema)
-Marker.belongsTo(User)
 
 module.exports = Marker
