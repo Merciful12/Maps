@@ -1,19 +1,35 @@
 'use strict'
 
-const express = require('express')
+require('app-module-path').addPath(__dirname)
+
+const Express = require('express')
+const {
+  initializerModels,
+  initializerSeed,
+  initializerSequelize
+} = require('initializers')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const morgan = require('morgan')
+const config = require('config/config')
 
-const app = express()
-app.use(morgan('combined'))
-app.use(bodyParser.json())
-app.use(cors())
+const main = async () => {
+  console.log('main')
+  const app = new Express()
+  app.use(morgan('combined'))
+  app.use(bodyParser.json())
+  app.use(cors())
 
-app.post('/register', (req, res) => {
-  res.send({
-    message: `hello ${req.body.email}, have fun`
-  })
-})
+  require('./routes')(app)
 
-app.listen(process.env.PORT || 8081)
+  await initializerSequelize()
+  await initializerModels()
+  await initializerSeed()
+
+  await new Promise((resolve, reject) => app
+    .listen(config.port, resolve)
+    .on('error', reject))
+
+  console.log('main -> done')
+}
+main().catch(console.error)
