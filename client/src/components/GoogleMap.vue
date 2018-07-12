@@ -108,7 +108,7 @@ export default {
       const marker = this.currentPlace
       if (marker) {
         this.users.push({
-          position: marker,
+          Marker: marker,
           name: 'User' + (Math.random() * 100).toFixed()
         })
         this.places.push(this.currentPlace)
