@@ -7,12 +7,6 @@ const bcrypt = require('bcrypt')
 const { pepperAdd } = require('utils/security')
 
 const schema = {
-  name: {
-    type: Sequelize.STRING
-  },
-  age: {
-    type: Sequelize.INTEGER
-  },
   email: {
     type: Sequelize.STRING,
     unique: true
@@ -23,29 +17,21 @@ const schema = {
 }
 
 const saltRounds = config.get('security.saltRounds')
-const hashPasswordHook = async (user, options) => {
-  if (!user.changed('password')) {
+const hashPasswordHook = async (admin, options) => {
+  if (!admin.changed('password')) {
     return
   }
-  const passwordHash = await bcrypt.hash(pepperAdd(user.password), saltRounds)
-  user.password = passwordHash
+  const passwordHash = await bcrypt.hash(pepperAdd(admin.password), saltRounds)
+  admin.password = passwordHash
 }
 
 const options = {
-  indexes: [
-    {
-      fields: [ 'name' ]
-    },
-    {
-      fields: [ 'email' ]
-    }
-  ],
   hooks: {
     beforeCreate: hashPasswordHook,
     beforeUpdate: hashPasswordHook
   }
 }
 
-const User = sequelize.define('User', schema, options)
+const Admin = sequelize.define('Admin', schema, options)
 
-module.exports = User
+module.exports = Admin

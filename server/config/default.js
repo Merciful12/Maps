@@ -12,9 +12,29 @@ const configDefault = {
     base: '/api',
     v1: 'v1'
   },
+  security: {
+    pepper: 'nmWwY73T546vaaT6vBRw',
+    saltRounds: 10,
+    roles: {
+      user: 'user',
+      admin: 'admin'
+    },
+    cookie: {
+      name: 'auth',
+      config: {
+        httpOnly: true,
+        maxAge: 1800000
+      }
+    }
+  },
   db: {
     seed: {
-      numUsers: 15
+      numUsers: 15,
+      numMarkers: 15
+    },
+    admin: {
+      email: 'admin@admin.com',
+      password: 'testpassword'
     },
     config: {
       database: process.env.DB_NAME || 'maps',
@@ -44,7 +64,6 @@ const configDefault = {
       level: 'debug',
       format: winston.format.combine(
         winston.format.splat(),
-        // log server %s started, serverName
         winston.format.simple(),
         winston.format.timestamp(),
         winston.format.colorize(),
