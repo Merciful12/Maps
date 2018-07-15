@@ -26,8 +26,7 @@ const initializerSeed = async () => {
     const users = []
     for (let i = 0; i < numUsers; i++) {
       const pass = chance.string({ length: 8 })
-      logger.debug('initializerSeed -> marker creted %j', pass)
-
+      logger.debug('PASSWORD %j', pass)
       const user = await User.create({
         name: chance.first(),
         age: chance.age(),
@@ -43,7 +42,7 @@ const initializerSeed = async () => {
         lng: chance.longitude({min: 39, max: 40})
       })
 
-      marker.setUser(users[0], { save: false })
+      users[i].setMarker(marker)
       await marker.save({ transaction })
       logger.debug('initializerSeed -> marker creted %j', marker)
     }

@@ -6,6 +6,8 @@ const config = require('config')
 const bcrypt = require('bcrypt')
 const { pepperAdd } = require('utils/security')
 
+const Marker = require('./Marker')
+
 const schema = {
   name: {
     type: Sequelize.STRING
@@ -47,5 +49,5 @@ const options = {
 }
 
 const User = sequelize.define('User', schema, options)
-
+User.hasOne(Marker, {foreignKey: 'id'})
 module.exports = User

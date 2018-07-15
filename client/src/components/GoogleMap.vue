@@ -20,7 +20,7 @@
           <b-button
             @click="addMarker"
             variant="success"
-            :disabled="!isGeoFillIn ? true : false"
+            :disabled="!isGeoFillIn"
           >
             Add
           </b-button>
@@ -67,11 +67,11 @@
 </template>
 
 <script>
-import UserService from '@/services/UserService'
+// import UserService from '@/services/UserService'
 export default {
   name: 'GoogleMap',
   async mounted () {
-    this.users = (await UserService.list()).data
+    this.users = null// (await UserService.list()).data
   },
   data () {
     return {
@@ -87,7 +87,7 @@ export default {
   },
   computed: {
     isGeoFillIn () {
-      return this.currentPlace
+      return this.currentPlace !== null
     }
   },
   methods: {

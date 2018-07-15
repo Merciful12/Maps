@@ -13,15 +13,22 @@ const schema = {
         },
         password: {
           type: 'string'
+        },
+        name: {
+          type: 'string',
+          pattern: '^[A-Za-z]{1,32}$'
+        },
+        age: {
+          type: 'integer',
+          minimum: 1
         }
       },
-      required: ['password', 'email']
-    },
-    params: {
-      $ref: 'emptyObject'
-    },
-    query: {
-      $ref: 'emptyObject'
+      params: {
+        $ref: 'emptyObject'
+      },
+      query: {
+        $ref: 'emptyObject'
+      }
     }
   },
   required: ['body']

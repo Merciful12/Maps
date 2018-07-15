@@ -29,8 +29,8 @@ const configDefault = {
   },
   db: {
     seed: {
-      numUsers: 15,
-      numMarkers: 15
+      numUsers: 3,
+      numMarkers: 3
     },
     admin: {
       email: 'admin@admin.com',

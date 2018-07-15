@@ -13,7 +13,10 @@ const initializerMiddlewares = (app) => {
   logger.info('initializerMiddlewares', limit)
 
   app.use(bodyParser.json({ limit }))
-  app.use(cors())
+  app.use(cors({
+    credentials: true,
+    origin: true
+  }))
   app.use(cookieParser())
 
   app.route = express.Router()
