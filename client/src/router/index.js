@@ -2,9 +2,11 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Register from '@/components/Register'
 import Login from '@/components/Login'
-import Profile from '@/components/Profile'
-import ProfileEdit from '@/components/ProfileEdit'
-import GoogleMap from '@/components/GoogleMap'
+import Profile from '@/components/profile/Profile'
+import Edit from '@/components/profile/Edit'
+import EditMarker from '@/components/profile/EditMarker'
+import Show from '@/components/profile/Show'
+import Index from '@/components/Index'
 
 Vue.use(Router)
 
@@ -13,7 +15,7 @@ export default new Router({
     {
       path: '/',
       name: 'index',
-      component: GoogleMap
+      component: Index
     },
     {
       path: '/register',
@@ -27,13 +29,24 @@ export default new Router({
     },
     {
       path: '/profile',
-      name: 'profile',
       component: Profile,
-      children: [{
-        path: 'edit',
-        name: 'edit',
-        component: ProfileEdit
-      }]
+      children: [
+        {
+          path: '',
+          name: 'profile-show',
+          component: Show
+        },
+        {
+          path: 'edit',
+          name: 'profile-edit',
+          component: Edit
+        },
+        {
+          path: 'marker/edit',
+          name: 'marker-edit',
+          component: EditMarker
+        }
+      ]
     }
   ]
 })

@@ -1,7 +1,7 @@
 'use strict'
 
 const sequelize = require('utils/sequelize')
-const { User, Admin, Marker } = require('models')
+const { User, Admin } = require('models')
 const Chance = require('chance')
 const config = require('config')
 const { app: logger } = require('utils/logger')
@@ -25,26 +25,24 @@ const initializerSeed = async () => {
 
     const users = []
     for (let i = 0; i < numUsers; i++) {
-      const pass = chance.string({ length: 8 })
-      logger.debug('PASSWORD %j', pass)
-      const user = await User.create({
+      const userData = {
         name: chance.first(),
         age: chance.age(),
         email: chance.email(),
-        password: pass
-      }, { transaction })
+        password: chance.string({ length: 8 })
+      }
+      const user = await User.create(userData, { transaction })
       users.push(user)
+      logger.debug(`initializerSeed -> user created %j`, userData)
     }
-
     for (let i = 0; i < numMarkers; i++) {
-      const marker = await Marker.build({
+      const markerData = {
         lat: chance.latitude({min: 51, max: 52}),
         lng: chance.longitude({min: 39, max: 40})
-      })
-
-      users[i].setMarker(marker)
-      await marker.save({ transaction })
-      logger.debug('initializerSeed -> marker creted %j', marker)
+      }
+      users[i].createMarker(markerData, { save: false })
+      await users[i].save({ transaction })
+      logger.debug(`initializerSeed -> user ${i + 1} created marker %j`, markerData)
     }
   })
   logger.info('initializerSeed -> done')

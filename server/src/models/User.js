@@ -49,5 +49,7 @@ const options = {
 }
 
 const User = sequelize.define('User', schema, options)
-User.hasOne(Marker, {foreignKey: 'id'})
+
+User.hasOne(Marker, { foreignKey: 'userId' })
+
 module.exports = User

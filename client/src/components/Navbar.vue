@@ -8,11 +8,9 @@
           <template slot="button-content">
             User
           </template>
-          <b-dropdown-item :to="{ name: 'profile' }">Profile</b-dropdown-item>
+          <b-dropdown-item :to="{ name: 'profile-show' }">Profile</b-dropdown-item>
           <b-dropdown-item :to="{ name: 'login' }">Login</b-dropdown-item>
           <b-dropdown-item @click="logout">Logout</b-dropdown-item>
-          <b-dropdown-item href="#">Profile</b-dropdown-item>
-          <b-dropdown-item href="#">Signout</b-dropdown-item>
         </b-nav-item-dropdown>
       </b-navbar-nav>
     </b-collapse>

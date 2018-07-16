@@ -4,7 +4,7 @@ export default {
   me () {
     return Api().get('users/me')
   },
-  edit (id, user) {
-    return Api().put(`users/${id}`, user)
+  edit (user) {
+    return Api().put(`users/edit`, user)
   }
 }

@@ -67,7 +67,7 @@ const validateMiddleware = (id) => asyncMiddleware(async (req, res, next) => {
 })
 
 const { name: authCookieName, config: cookieConfig } = config.get('security.cookie')
-const checkAuthenticated = (role, checkOwner) => asyncMiddleware(async (req, res, next) => {
+const checkAuthenticated = (role) => asyncMiddleware(async (req, res, next) => {
   logger.debug('middlewares.checkAuthenticated -> checking role of %j', {
     cookies: req.cookies
   })
@@ -89,14 +89,6 @@ const checkAuthenticated = (role, checkOwner) => asyncMiddleware(async (req, res
   const newCookie = await cookieTracker.cookieCreate(authCookieData)
   res.cookie(authCookieName, newCookie, cookieConfig)
   cookieTracker.cookieRemove(authCookie)
-
-  if (checkOwner) {
-    logger.debug('middlewares.checkAuthenticated -> matching owner %j', checkOwner)
-    const isOwner = req.params.id === authCookieData.id.toString()
-    if (!isOwner) {
-      throw new ForbiddenError('Access is denied due to insufficient privileges')
-    }
-  }
 
   if (role) {
     logger.debug('middlewares.checkAuthenticated -> matching role %j', role)

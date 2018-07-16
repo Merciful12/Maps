@@ -9,12 +9,12 @@ const schema = {
   },
   lng: {
     type: Sequelize.DOUBLE
+  },
+  userId: {
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+    allowNull: false
   }
-  // userId: {
-  //   type: Sequelize.DOUBLE,
-  //   primaryKey: true,
-  //   allowNull: false
-  // }
 }
 
 const options = {}

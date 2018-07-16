@@ -12,7 +12,7 @@ const {
 const router = new express.Router()
 
 router.get('/me',
-  checkAuthenticated(false, false),
+  checkAuthenticated(User),
   validateMiddleware('emptySchema'),
   asyncMiddleware(async ({ authenticatedUser }, res) => {
     const user = await User.findById(authenticatedUser.id, {
@@ -26,19 +26,19 @@ router.get('/me',
     res.json(user)
   }))
 
-router.put('/:id',
-  checkAuthenticated(false, true),
+router.put('/edit',
+  checkAuthenticated(User),
   validateMiddleware('user'),
-  asyncMiddleware(async ({ body: userData, params: { id } }, res) => {
+  asyncMiddleware(async ({ body: userData, authenticatedUser }, res) => {
     console.log(userData)
 
     const user = await User.update(userData, {
       where: {
-        id: id
+        id: authenticatedUser.id
       }
     })
-    if (!user) {
-      throw new NotFoundError(`user ${id} not found`)
+    if (!user.length) {
+      throw new NotFoundError(`user not found`)
     }
     res.json(user)
   }))

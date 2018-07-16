@@ -21,6 +21,7 @@
             <b-alert variant="danger" :show="error !== ''">{{ error }}</b-alert>
           <b-button type="submit" variant="primary">Login</b-button>
         </b-form>
+        <b-alert variant="danger" :show="error !== ''">{{ error }}</b-alert>
       </b-col>
     </b-row>
   </b-container>
@@ -43,8 +44,7 @@ export default {
         password: this.password
       })
         .then(response => {
-          console.log(response.data)
-          this.$router.push({ name: 'profile' })
+          this.$router.push({ name: 'profile-show' })
         })
         .catch(err => {
           this.error = err.response.data.message

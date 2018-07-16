@@ -9,42 +9,42 @@ const {
 
 const router = new express.Router()
 
-router.post('/',
-  checkAuthenticated(false, false),
+router.post('/create',
+  checkAuthenticated(User),
   // validateMiddleware('markCreate'),
   asyncMiddleware(async ({ body: markerData, authenticatedUser }, res) => {
     const marker = await Marker.create({
-      id: authenticatedUser.id,
+      userId: authenticatedUser.id,
       ...markerData
     })
     res.json(marker)
   }))
 
-router.put('/:id',
-  checkAuthenticated(false, false),
-  asyncMiddleware(async ({ body: markerData, authenticatedUser, params: { id } }, res) => {
+router.put('/edit',
+  checkAuthenticated(User),
+  asyncMiddleware(async ({ body: markerData, authenticatedUser }, res) => {
     const marker = await Marker.update(markerData, {
       where: {
-        id: id
+        userId: authenticatedUser.id
       }
     })
     if (!marker) {
       throw new NotFoundError(`user ${authenticatedUser.id} doesnt have a marker`)
     }
-    res.json(markerData)
+    res.json(marker)
   }))
 
-router.get('/:id',
-  checkAuthenticated(false, false),
-  validateMiddleware('emptySchemaWithId'),
-  asyncMiddleware(async ({ params: { id } }, res) => {
-    const marker = await Marker.findById(id, {
-      include: [
-        { model: User }
-      ]
+router.get('/',
+  checkAuthenticated(User),
+  validateMiddleware('emptySchema'),
+  asyncMiddleware(async ({ authenticatedUser }, res) => {
+    const marker = await Marker.findOne({
+      where: {
+        userId: authenticatedUser.id
+      }
     })
     if (!marker) {
-      throw new NotFoundError(`marker ${marker.id} not found`)
+      throw new NotFoundError(`user ${authenticatedUser.id} doesnt have a marker`)
     }
     res.json(marker)
   }))
