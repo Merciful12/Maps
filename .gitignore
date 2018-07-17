@@ -1,6 +1,5 @@
 # Add any directories, files, or patterns you don't want to be tracked by version control
 node_modules
-build
 npm-debug.log
 .env
 .DS_Store
@@ -9,3 +8,4 @@ npm-debug.log
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+*.sqlite
