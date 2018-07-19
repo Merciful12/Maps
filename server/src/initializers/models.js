@@ -7,7 +7,7 @@ const initializerModels = async () => {
   logger.info('initializerModels')
 
   require('models')
-  await sequelize.sync()
+  await sequelize.sync({force: true})
 
   logger.info('initializerModels -> done')
 }

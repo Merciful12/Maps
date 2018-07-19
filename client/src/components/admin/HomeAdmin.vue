@@ -1,13 +1,13 @@
 <template>
   <b-container>
     <b-row align-h="center">
-      <b-col cols="9">
+      <b-col md="9">
         <template v-if="users && markers">
           <h1>Users:</h1>
           <ul>
             <li v-for="user in users" :key="user.id">
               <router-link :to="{ name: 'show-user', params: { id: user.id }}">
-                {{ user.name }}
+                {{ user.name || user.email }}
               </router-link>
             </li>
           </ul>

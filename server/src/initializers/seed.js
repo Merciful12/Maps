@@ -1,7 +1,7 @@
 'use strict'
 
 const sequelize = require('utils/sequelize')
-const { User, Admin } = require('models')
+const { User, Admin, AvailableZone } = require('models')
 const Chance = require('chance')
 const config = require('config')
 const { app: logger } = require('utils/logger')
@@ -21,7 +21,15 @@ const initializerSeed = async () => {
   }
 
   await sequelize.transaction(async (transaction) => {
-    await Admin.create(config.get('db.admin'), { transaction })
+    const adminData = await User.create(config.get('db.admin'), { transaction })
+    const admin = Admin.build({})
+    admin.setUser(adminData, { save: false })
+    await admin.save({ transaction })
+    logger.debug(`initializerSeed -> admin created %j`, adminData)
+
+    await User.create(config.get('db.sampleUser'), { transaction })
+
+    await AvailableZone.create(config.get('db.sampleZone'), { transaction })
 
     const users = []
     for (let i = 0; i < numUsers; i++) {

@@ -1,7 +1,7 @@
 <template>
   <b-container>
     <b-row align-h="center">
-      <b-col cols="5">
+      <b-col md="5">
         <b-form @submit.prevent="onSubmit">
             <b-form-input type="email"
                           v-model="email"

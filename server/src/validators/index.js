@@ -7,6 +7,7 @@ const urlWithId = require('./url-with-id')
 const login = require('./login')
 const user = require('./user')
 const createMarker = require('./create-marker')
+const createZone = require('./create-zone')
 
 module.exports = {
   emptyObject,
@@ -14,6 +15,7 @@ module.exports = {
   emptySchemaWithId,
   urlWithId,
   user,
+  createZone,
   createMarker,
   login
 }

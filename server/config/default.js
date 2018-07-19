@@ -15,10 +15,6 @@ const configDefault = {
   security: {
     pepper: 'nmWwY73T546vaaT6vBRw',
     saltRounds: 10,
-    roles: {
-      user: 'user',
-      admin: 'admin'
-    },
     cookie: {
       name: 'auth',
       config: {
@@ -35,6 +31,15 @@ const configDefault = {
     admin: {
       email: 'admin@admin.com',
       password: 'testpassword'
+    },
+    sampleUser: {
+      email: 'user@user.com',
+      password: 'testpassword'
+    },
+    sampleZone: {
+      lat: 51.665963,
+      lng: 39.192307,
+      radius: 1000
     },
     config: {
       database: process.env.DB_NAME || 'maps',

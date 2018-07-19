@@ -7,7 +7,7 @@ export default {
   edit (marker) {
     return Api().put(`markers/edit`, marker)
   },
-  creare (marker) {
-    return Api().post(`markers/`, marker)
+  create (marker) {
+    return Api().post(`markers/create`, marker)
   }
 }

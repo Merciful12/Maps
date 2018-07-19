@@ -1,7 +1,7 @@
 <template>
   <b-container>
     <b-row align-h="center">
-      <b-col cols="5">
+      <b-col md="5">
         <b-form @submit.prevent="onSubmit">
           <b-form-group>
             <b-form-input type="email"
@@ -21,7 +21,6 @@
             <b-alert variant="danger" :show="error !== ''">{{ error }}</b-alert>
           <b-button type="submit" variant="primary">Login</b-button>
         </b-form>
-        <b-alert variant="danger" :show="error !== ''">{{ error }}</b-alert>
       </b-col>
     </b-row>
   </b-container>
@@ -44,7 +43,7 @@ export default {
         password: this.password
       })
         .then(response => {
-          this.$router.push({ name: 'profile-show' })
+          this.$router.push({ name: 'index' })
         })
         .catch(err => {
           this.error = err.response.data.message

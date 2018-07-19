@@ -2,18 +2,17 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Register from '@/components/Register'
 import Login from '@/components/Login'
-import Profile from '@/components/profile/Profile'
-import Edit from '@/components/profile/Edit'
+import ProfileBase from '@/components/profile/ProfileBase'
+import EditProfile from '@/components/profile/EditProfile'
 import EditMarker from '@/components/profile/EditMarker'
-import Show from '@/components/profile/Show'
+import CreateMarker from '@/components/profile/CreateMarker'
+import ShowProfile from '@/components/profile/ShowProfile'
 import Index from '@/components/Index'
-// const AdminRoutes = require('./admin')
 import HomeAdmin from '@/components/admin/HomeAdmin'
 import ShowMarkerAdmin from '@/components/admin/ShowMarker'
 import ShowUserAdmin from '@/components/admin/ShowUser'
 import EditMarkerAdmin from '@/components/admin/EditMarker'
 import EditUserAdmin from '@/components/admin/EditUser'
-import LoginAdmin from '@/components/admin/LoginAdmin'
 
 Vue.use(Router)
 
@@ -36,29 +35,29 @@ export default new Router({
     },
     {
       path: '/profile',
-      component: Profile,
+      component: ProfileBase,
       children: [
         {
           path: '',
           name: 'profile-show',
-          component: Show
+          component: ShowProfile
         },
         {
           path: 'edit',
           name: 'profile-edit',
-          component: Edit
+          component: EditProfile
         },
         {
           path: 'marker/edit',
           name: 'marker-edit',
           component: EditMarker
+        },
+        {
+          path: 'marker/create',
+          name: 'marker-create',
+          component: CreateMarker
         }
       ]
-    },
-    {
-      path: '/admin/login',
-      name: 'login-admin',
-      component: LoginAdmin
     },
     {
       path: '/admin/',

@@ -12,13 +12,13 @@
                 size="sm"
                 >auto
       </b-button>
-       <ul class="mt-4"><h4><b>Location:</b></h4>
+      <ul class="mt-4"><h4><b>Location:</b></h4>
           <li><b>lat:</b> {{ marker.lat }}</li>
           <li><b>lng:</b> {{ marker.lng }}</li>
         </ul>
         <gmap-map
           class="mt-4 w-100"
-          @click.prevent:="setMarker"
+          @click.prevent:="error = 'This is unavailable zone'"
           :center="this.marker"
           :zoom="11"
           style="height: 350px"
@@ -43,87 +43,59 @@
                 >Save
       </b-button>
     </template>
-    <b-alert v-for="(error, i) in errors"
-            :key="i"
-            variant="danger"
-            :show="errors.length > 0"
-            >
-            {{ error }}
-    </b-alert>
+    <b-alert variant="danger" :show="error !== ''">{{ error }}</b-alert>
   </div>
 </template>
 
 <script>
-import { validateMarker } from '@/validators/validators'
+import ZoneService from '@/services/ZoneService'
 import MarkerService from '@/services/MarkerService'
 export default {
   created () {
-    MarkerService.my()
+    ZoneService.list()
       .then(response => {
-        this.marker = response.data.marker
-        this.zones = response.data.zones
+        this.zones = response.data
       })
       .catch(err => {
-        this.errors.push(err.response.data.message)
+        this.error = err.response.data.message
       })
   },
   data () {
     return {
-      marker: null,
+      marker: {
+        lng: 50,
+        lat: 50
+      },
       zones: null,
-      errors: []
+      error: ''
     }
   },
   methods: {
+    log (e) {
+      console.log(e)
+    },
     save () {
-      if (this.errors.length) return
-      MarkerService.edit({
-        lng: this.marker.lng,
-        lat: this.marker.lat
-      })
+      MarkerService.create(this.marker)
         .then(() => {
           this.$router.push({ name: 'profile-show' })
         })
         .catch(err => {
-          this.errors.push(err.response.data.message)
+          this.error = err.response.data.message
         })
     },
     setPlace (place) {
-      const tempMarker = {
-        lat: place.geometry.location.lat(),
-        lng: place.geometry.location.lng()
-      }
-      this.errors = []
-      if (!validateMarker(tempMarker, this.zones) &&
-      this.errors.push('Cannot create marker here')) {
-        return
-      }
-      this.marker = tempMarker
+      this.marker.lat = place.geometry.location.lat()
+      this.marker.lng = place.geometry.location.lng()
     },
     setMarker (point) {
-      const tempMarker = {
-        lat: point.latLng.lat(),
-        lng: point.latLng.lng()
-      }
-      this.errors = []
-      if (!validateMarker(tempMarker, this.zones) &&
-      this.errors.push('Cannot create marker here')) {
-        return
-      }
-      this.marker = tempMarker
+      this.error = ''
+      this.marker.lat = point.latLng.lat()
+      this.marker.lng = point.latLng.lng()
     },
     geoLocate () {
-      this.errors = []
       navigator.geolocation.getCurrentPosition(position => {
-        const tempMarker = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        }
-        if (!validateMarker(tempMarker, this.zones) &&
-        this.errors.push('Cannot create marker here')) {
-          return
-        }
-        this.marker = tempMarker
+        this.marker.lat = position.coords.latitude
+        this.marker.lng = position.coords.longitude
       })
     }
   }

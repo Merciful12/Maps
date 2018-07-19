@@ -11,9 +11,6 @@ const schema = {
           type: 'string',
           format: 'email'
         },
-        password: {
-          type: 'string'
-        },
         name: {
           type: 'string',
           pattern: '^[A-Za-z]{1,32}$'

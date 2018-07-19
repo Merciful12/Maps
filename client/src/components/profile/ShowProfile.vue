@@ -6,20 +6,24 @@
       <h4><b>Age:</b> {{ user.age }}</h4>
       <b-button class="my-4" :to="{name: 'profile-edit'}" variant="warning">Edit profile</b-button>
       <hr>
-      <ul><h4><b>Location:</b></h4>
-       <li><b>lat:</b> {{ user.Marker.lat }}</li>
-       <li><b>lng:</b> {{ user.Marker.lng }}</li>
-      </ul>
-      <gmap-map
-        :center="this.user.Marker"
-        :zoom="11"
-        style="width: 350px;  height: 350px"
-      >
-        <gmap-marker
-          :position="this.user.Marker"
-        ></gmap-marker>
-      </gmap-map>
-      <b-button class="my-4" :to="{name: 'marker-edit'}" variant="warning">Edit marker</b-button>
+      <template v-if="user.Marker">
+        <ul><h4><b>Location:</b></h4>
+        <li><b>lat:</b> {{ user.Marker.lat }}</li>
+        <li><b>lng:</b> {{ user.Marker.lng }}</li>
+        </ul>
+        <gmap-map
+          :center="this.user.Marker"
+          :zoom="11"
+          style="height: 350px"
+          class="w-100"
+        >
+          <gmap-marker
+            :position="this.user.Marker"
+          ></gmap-marker>
+        </gmap-map>
+        <b-button class="my-4" :to="{name: 'marker-edit'}" variant="warning">Edit marker</b-button>
+      </template>
+      <b-button v-else class="my-4" :to="{name: 'marker-create'}" variant="warning">Add marker</b-button>
     </template>
     <b-alert variant="danger" :show="error !== ''">{{ error }}</b-alert>
   </div>

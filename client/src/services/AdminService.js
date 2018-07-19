@@ -1,12 +1,6 @@
 import Api from '@/services/Api'
 
 export default {
-  loginAdmin (credentials) {
-    return Api().post('admin/login', credentials)
-  },
-  logoutAdmin () {
-    return Api().post('admin/logout')
-  },
   index () {
     return Api().get('admin')
   },
