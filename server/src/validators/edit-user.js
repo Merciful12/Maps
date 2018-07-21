@@ -4,7 +4,7 @@ const schema = {
   type: 'object',
   properties: {
     body: {
-      $ref: 'zone'
+      $ref: 'user'
     },
     params: {
       $ref: 'emptyObject'

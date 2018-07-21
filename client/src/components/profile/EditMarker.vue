@@ -19,11 +19,12 @@
         <gmap-map
           class="mt-4 w-100"
           @click.prevent:="setMarker"
-          :center="this.marker"
+          :center="marker"
           :zoom="11"
           style="height: 350px"
         >
           <gmap-circle
+            :options="{fillColor: 'green', strokeColor: 'green'}"
             v-for="(zone, index) in zones" :key="index"
             @click="setMarker"
             :center="{
@@ -54,9 +55,10 @@
 </template>
 
 <script>
-import { validateMarker } from '@/validators/validators'
 import MarkerService from '@/services/MarkerService'
+import { markerHandler } from '@/mixins/markerHandler'
 export default {
+  mixins: [markerHandler],
   created () {
     MarkerService.my()
       .then(response => {
@@ -67,16 +69,10 @@ export default {
         this.errors.push(err.response.data.message)
       })
   },
-  data () {
-    return {
-      marker: null,
-      zones: null,
-      errors: []
-    }
-  },
   methods: {
     save () {
       if (this.errors.length) return
+
       MarkerService.edit({
         lng: this.marker.lng,
         lat: this.marker.lat
@@ -87,44 +83,6 @@ export default {
         .catch(err => {
           this.errors.push(err.response.data.message)
         })
-    },
-    setPlace (place) {
-      const tempMarker = {
-        lat: place.geometry.location.lat(),
-        lng: place.geometry.location.lng()
-      }
-      this.errors = []
-      if (!validateMarker(tempMarker, this.zones) &&
-      this.errors.push('Cannot create marker here')) {
-        return
-      }
-      this.marker = tempMarker
-    },
-    setMarker (point) {
-      const tempMarker = {
-        lat: point.latLng.lat(),
-        lng: point.latLng.lng()
-      }
-      this.errors = []
-      if (!validateMarker(tempMarker, this.zones) &&
-      this.errors.push('Cannot create marker here')) {
-        return
-      }
-      this.marker = tempMarker
-    },
-    geoLocate () {
-      this.errors = []
-      navigator.geolocation.getCurrentPosition(position => {
-        const tempMarker = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        }
-        if (!validateMarker(tempMarker, this.zones) &&
-        this.errors.push('Cannot create marker here')) {
-          return
-        }
-        this.marker = tempMarker
-      })
     }
   }
 }

@@ -4,7 +4,16 @@ const schema = {
   type: 'object',
   properties: {
     body: {
-      $ref: 'zone'
+      type: 'object',
+      additionalProperties: false,
+      properties: {
+        lat: {
+          type: 'number'
+        },
+        lng: {
+          type: 'number'
+        }
+      }
     },
     params: {
       $ref: 'emptyObject'

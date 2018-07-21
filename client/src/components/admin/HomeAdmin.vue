@@ -19,6 +19,15 @@
               </router-link>
             </li>
           </ul>
+          <h1>Available Zones:</h1>
+          <ul>
+            <li v-for="zone in zones" :key="zone.id">
+              <router-link :to="{ name: 'show-zone', params: { id: zone.id }}">
+                lat: {{ zone.lng }}; lng: {{ zone.lat }}; radius: {{ zone.radius }}
+              </router-link>
+            </li>
+          </ul>
+          <b-button :to="{ name: 'create-zone' }">Add</b-button>
         </template>
         <b-alert variant="danger" :show="error !== ''">{{ error }}</b-alert>
       </b-col>
@@ -39,9 +48,9 @@ export default {
   created () {
     AdminService.index()
       .then(response => {
-        console.log(response.data)
         this.users = response.data.users
         this.markers = response.data.markers
+        this.zones = response.data.zones
       })
       .catch(err => {
         this.error = err.response.data.message

@@ -25,7 +25,13 @@
       </template>
       <b-button v-else class="my-4" :to="{name: 'marker-create'}" variant="warning">Add marker</b-button>
     </template>
-    <b-alert variant="danger" :show="error !== ''">{{ error }}</b-alert>
+    <b-alert v-for="(error, i) in errors"
+            :key="i"
+            variant="danger"
+            :show="errors.length > 0"
+            >
+            {{ error }}
+    </b-alert>
   </div>
 </template>
 
@@ -34,17 +40,17 @@ import UserService from '@/services/UserService'
 export default {
   created () {
     UserService.me()
-      .then((response) => {
+      .then(response => {
         this.user = response.data
       })
       .catch(err => {
-        this.error = err.response.data.message
+        this.errors.push(err.response.data.message)
       })
   },
   data () {
     return {
       user: null,
-      error: ''
+      errors: []
     }
   }
 }

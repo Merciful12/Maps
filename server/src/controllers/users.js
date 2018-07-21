@@ -28,10 +28,8 @@ router.get('/me',
 
 router.put('/edit',
   checkAuthenticated(User),
-  validateMiddleware('user'),
+  validateMiddleware('editUser'),
   asyncMiddleware(async ({ body: userData, authenticatedUser }, res) => {
-    console.log(userData)
-
     const user = await User.update(userData, {
       where: {
         id: authenticatedUser.id
@@ -40,7 +38,7 @@ router.put('/edit',
     if (!user.length) {
       throw new NotFoundError(`user not found`)
     }
-    res.json(user)
+    res.json(userData)
   }))
 
 module.exports = router

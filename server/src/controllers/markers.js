@@ -13,7 +13,6 @@ class MarkerInAvailableZone {
   }
 
   check (zone) {
-    console.log(this)
     const R = 6378137 // Earth’s mean radius in meter
     const dLat = this.rad(zone.lat - this.marker.lat)
     const dLong = this.rad(zone.lng - this.marker.lng)
@@ -49,7 +48,7 @@ router.post('/create',
 
 router.put('/edit',
   checkAuthenticated(User),
-  validateMiddleware('createMarker'),
+  validateMiddleware('editMarker'),
   asyncMiddleware(async ({ body: markerData, authenticatedUser }, res) => {
     const availableZones = await AvailableZone.findAll()
     const checker = new MarkerInAvailableZone(markerData)

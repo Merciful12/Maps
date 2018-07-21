@@ -7,13 +7,13 @@ const schema = {
       $ref: 'zone'
     },
     params: {
-      $ref: 'emptyObject'
+      $ref: 'urlWithId'
     },
     query: {
       $ref: 'emptyObject'
     }
   },
-  required: ['body']
+  required: ['body', 'params']
 }
 
 module.exports = schema

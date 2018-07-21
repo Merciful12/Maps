@@ -14,6 +14,15 @@ export default {
     return Api().get(`admin/markers/${userId}`)
   },
   editMarker (marker) {
-    return Api().get(`admin/markers/${marker.userId}`, marker)
+    return Api().put(`admin/markers/${marker.userId}`, marker)
+  },
+  showZone (id) {
+    return Api().get(`admin/zones/${id}`)
+  },
+  editZone (zone, id) {
+    return Api().put(`admin/zones/${id}`, zone)
+  },
+  createZone (zone) {
+    return Api().post(`admin/zones`, zone)
   }
 }

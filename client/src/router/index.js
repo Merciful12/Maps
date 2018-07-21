@@ -13,6 +13,9 @@ import ShowMarkerAdmin from '@/components/admin/ShowMarker'
 import ShowUserAdmin from '@/components/admin/ShowUser'
 import EditMarkerAdmin from '@/components/admin/EditMarker'
 import EditUserAdmin from '@/components/admin/EditUser'
+import ShowZone from '@/components/admin/ShowZone'
+import EditZone from '@/components/admin/EditZone'
+import CreateZone from '@/components/admin/CreateZone'
 
 Vue.use(Router)
 
@@ -75,14 +78,29 @@ export default new Router({
       component: EditUserAdmin
     },
     {
-      path: '/admin/marker:id',
+      path: '/admin/marker/:id',
       name: 'show-marker',
       component: ShowMarkerAdmin
     },
     {
-      path: '/admin/marker:id/edit',
+      path: '/admin/marker/:id/edit',
       name: 'edit-marker',
       component: EditMarkerAdmin
+    },
+    {
+      path: '/admin/zone/:id',
+      name: 'show-zone',
+      component: ShowZone
+    },
+    {
+      path: '/admin/zone/:id/edit',
+      name: 'edit-zone',
+      component: EditZone
+    },
+    {
+      path: '/admin/zones/create',
+      name: 'create-zone',
+      component: CreateZone
     }
   ]
 })

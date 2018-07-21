@@ -9,6 +9,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 Vue.config.productionTip = false
+
 Vue.use(VueGoogleMaps, {
   load: {
     key: 'AIzaSyCUJX_OWQ6VrhkIfX8SQHKAgwxgamtgWBk',

@@ -19,11 +19,6 @@
 import AuthService from '@/services/AuthService'
 export default {
   name: 'Navbar',
-  data () {
-    return {
-      user: null
-    }
-  },
   methods: {
     logout () {
       AuthService.logout()
@@ -32,6 +27,7 @@ export default {
         })
         .catch((err) => {
           console.log(err.response.data.message)
+          this.$router.push({ name: 'index' })
         })
     }
   }

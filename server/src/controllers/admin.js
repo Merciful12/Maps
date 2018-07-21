@@ -1,5 +1,5 @@
 const express = require('express')
-const { User, Marker, Admin } = require('models')
+const { User, Marker, Admin, AvailableZone } = require('models')
 const { NotFoundError } = require('errors')
 const {
   asyncMiddleware,
@@ -15,9 +15,11 @@ router.get('/',
   asyncMiddleware(async (req, res) => {
     const users = await User.findAll()
     const markers = await Marker.findAll()
+    const availableZones = await AvailableZone.findAll()
     const queryset = {
-      users: users,
-      markers: markers
+      users,
+      markers,
+      zones: availableZones
     }
     res.json(queryset)
   }))
@@ -39,7 +41,7 @@ router.get('/users/:id',
 
 router.put('/users/:id',
   checkAuthenticated(Admin),
-  validateMiddleware('user'),
+  validateMiddleware('editUserAdmin'),
   asyncMiddleware(async ({ body: userData, params: { id } }, res) => {
     const user = await User.update(userData, {
       where: {
@@ -49,24 +51,26 @@ router.put('/users/:id',
     if (!user) {
       throw new NotFoundError(`user ${id} not found`)
     }
-    res.json(user)
+    res.json(userData)
   }))
 
 router.post('/markers',
   checkAuthenticated(Admin),
-  validateMiddleware('createMarker'),
+  validateMiddleware('createMarkerAdmin'),
   asyncMiddleware(async ({ body: markerData }, res) => {
-    const marker = await Marker.create({
-      ...markerData
-    })
+    const marker = await Marker.create(markerData)
     res.json(marker)
   }))
 
 router.put('/markers/:id',
   checkAuthenticated(Admin),
-  validateMiddleware('createMarker'),
+  validateMiddleware('editMarkerAdmin'),
   asyncMiddleware(async ({ body: markerData, params: { id } }, res) => {
-    const marker = await Marker.update(...markerData)
+    const marker = await Marker.update(markerData, {
+      where: {
+        userId: id
+      }
+    })
     if (!marker) {
       throw new NotFoundError(`marker ${id} not found`)
     }
@@ -79,7 +83,7 @@ router.get('/markers/:id',
   asyncMiddleware(async ({ params: { id } }, res) => {
     const marker = await Marker.findById(id)
     if (!marker) {
-      throw new NotFoundError(`marker ${marker.id} not found`)
+      throw new NotFoundError(`marker ${id} not found`)
     }
     res.json(marker)
   }))
@@ -90,6 +94,40 @@ router.get('/markers',
   asyncMiddleware(async (req, res) => {
     const markers = await Marker.findAll()
     res.json(markers)
+  }))
+
+router.post('/zones',
+  checkAuthenticated(Admin),
+  validateMiddleware('createZone'),
+  asyncMiddleware(async ({ body: zoneData }, res) => {
+    const zone = await AvailableZone.create(zoneData)
+    res.json(zone)
+  }))
+
+router.put('/zones/:id',
+  checkAuthenticated(Admin),
+  validateMiddleware('editZone'),
+  asyncMiddleware(async ({ body: zoneData, params: { id } }, res) => {
+    const zone = await AvailableZone.update(zoneData, {
+      where: {
+        id: id
+      }
+    })
+    if (!zone) {
+      throw new NotFoundError(`zone ${id} not found`)
+    }
+    res.json(zoneData)
+  }))
+
+router.get('/zones/:id',
+  checkAuthenticated(Admin),
+  validateMiddleware('emptySchemaWithId'),
+  asyncMiddleware(async ({ params: { id } }, res) => {
+    const zone = await AvailableZone.findById(id)
+    if (!zone) {
+      throw new NotFoundError(`zone ${id} not found`)
+    }
+    res.json(zone)
   }))
 
 module.exports = router

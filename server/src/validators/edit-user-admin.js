@@ -4,16 +4,16 @@ const schema = {
   type: 'object',
   properties: {
     body: {
-      $ref: 'zone'
+      $ref: 'user'
     },
     params: {
-      $ref: 'emptyObject'
+      $ref: 'urlWithId'
     },
     query: {
       $ref: 'emptyObject'
     }
   },
-  required: ['body']
+  required: ['body', 'params']
 }
 
 module.exports = schema
