@@ -3,10 +3,7 @@
     <gmap-map
           v-if="zone"
           class="mt-4 w-100"
-          :center="{
-              lng: zone.lng,
-              lat: zone.lat
-            }"
+          :center="zone"
           :zoom="11"
           style="height: 350px"
         >
@@ -48,20 +45,23 @@ export default {
   data () {
     return {
       zone: null,
-      errors: [],
-      newZoneData: {}
+      errors: []
     }
   },
   methods: {
     setRadiuss (radius) {
-      this.newZoneData.radius = radius
+      this.zone.radius = radius
     },
     setCenterr (center) {
-      this.newZoneData.lng = center.lng()
-      this.newZoneData.lat = center.lat()
+      this.zone.lng = center.lng()
+      this.zone.lat = center.lat()
     },
     save () {
-      AdminService.editZone(this.newZoneData, this.zone.id)
+      AdminService.editZone({
+        lat: this.zone.lat,
+        lng: this.zone.lng,
+        radius: this.zone.radius,
+      },this.zone.id)
         .then(() => {
           this.$router.push({ name: 'show-zone', id: this.zone.id })
         })
