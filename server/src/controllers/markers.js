@@ -1,5 +1,5 @@
 const express = require('express')
-const { Marker, User, AvailableZone } = require('models')
+const { Marker, AvailableZone } = require('models')
 const { NotFoundError, ForbiddenError } = require('errors')
 const {
   asyncMiddleware,
@@ -30,7 +30,7 @@ class MarkerInAvailableZone {
 const router = new express.Router()
 
 router.post('/create',
-  checkAuthenticated(User),
+  checkAuthenticated(),
   validateMiddleware('createMarker'),
   asyncMiddleware(async ({ body: markerData, authenticatedUser }, res) => {
     const availableZones = await AvailableZone.findAll()
@@ -47,7 +47,7 @@ router.post('/create',
   }))
 
 router.put('/edit',
-  checkAuthenticated(User),
+  checkAuthenticated(),
   validateMiddleware('editMarker'),
   asyncMiddleware(async ({ body: markerData, authenticatedUser }, res) => {
     const availableZones = await AvailableZone.findAll()
@@ -68,7 +68,7 @@ router.put('/edit',
   }))
 
 router.get('/',
-  checkAuthenticated(User),
+  checkAuthenticated(),
   validateMiddleware('emptySchema'),
   asyncMiddleware(async ({ authenticatedUser }, res) => {
     const marker = await Marker.findOne({

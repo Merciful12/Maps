@@ -10,7 +10,7 @@ const configDefault = {
   },
   api: {
     base: '/api',
-    v1: 'v1'
+    v1: '/v1'
   },
   security: {
     pepper: 'nmWwY73T546vaaT6vBRw',
@@ -30,7 +30,8 @@ const configDefault = {
     },
     admin: {
       email: 'admin@admin.com',
-      password: 'testpassword'
+      password: 'testpassword',
+      role: 'admin'
     },
     sampleUser: {
       email: 'user@user.com',

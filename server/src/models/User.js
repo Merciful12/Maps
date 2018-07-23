@@ -19,6 +19,10 @@ const schema = {
     type: Sequelize.STRING,
     unique: true
   },
+  role: {
+    type: Sequelize.STRING,
+    defaultValue: 'user'
+  },
   password: {
     type: Sequelize.STRING
   }

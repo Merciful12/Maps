@@ -1,7 +1,7 @@
 'use strict'
 
 const express = require('express')
-const { User, AvailableZone } = require('models')
+const { AvailableZone } = require('models')
 const {
   asyncMiddleware,
   validateMiddleware,
@@ -11,7 +11,7 @@ const {
 const router = new express.Router()
 
 router.get('/',
-  checkAuthenticated(User),
+  checkAuthenticated(),
   validateMiddleware('emptySchema'),
   asyncMiddleware(async (req, res) => {
     const availableZones = await AvailableZone.findAll()

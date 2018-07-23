@@ -2,10 +2,9 @@
   <div>
     <gmap-map
           @click="newCenter"
-          class="mt-4 w-100"
+          class="mt-4 w-100 map"
           :center="{lng: 0, lat: 0}"
           :zoom="2"
-          style="height: 350px"
         >
           <gmap-circle
             v-if="zone"
@@ -19,7 +18,7 @@
           >
           </gmap-circle>
         </gmap-map>
-    <b-button @click="save" variant="success">Save</b-button>
+    <b-button @click="save" variant="success" class="my-4">Save</b-button>
     <b-alert v-for="(error, i) in errors"
         :key="i"
         variant="danger"

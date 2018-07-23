@@ -16,10 +16,10 @@ import EditUserAdmin from '@/components/admin/EditUser'
 import ShowZone from '@/components/admin/ShowZone'
 import EditZone from '@/components/admin/EditZone'
 import CreateZone from '@/components/admin/CreateZone'
+import store from '@/store/store'
 
 Vue.use(Router)
-
-export default new Router({
+const router = new Router({
   routes: [
     {
       path: '/',
@@ -43,6 +43,9 @@ export default new Router({
         {
           path: '',
           name: 'profile-show',
+          meta: {
+            requiresAuth: true
+          },
           component: ShowProfile
         },
         {
@@ -101,6 +104,16 @@ export default new Router({
       path: '/admin/zones/create',
       name: 'create-zone',
       component: CreateZone
-    }
+    },
+    { path: '*', redirect: '/' }
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.requiresAuth) {
+    store.state.user ? next() : next('/login')
+  }
+  next()
+})
+
+export default router

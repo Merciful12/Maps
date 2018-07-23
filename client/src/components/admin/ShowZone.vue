@@ -2,13 +2,12 @@
   <div>
     <template v-if="zone">
     <gmap-map
-          class="mt-4 w-100"
+          class="mt-4 w-100 map"
           :center="{
               lng: zone.lng,
               lat: zone.lat
             }"
           :zoom="11"
-          style="height: 350px"
         >
           <gmap-circle
             :options="{fillColor: 'green', strokeColor: 'green'}"

@@ -2,10 +2,9 @@
   <div>
     <gmap-map
           v-if="zone"
-          class="mt-4 w-100"
+          class="mt-4 w-100 map"
           :center="zone"
           :zoom="11"
-          style="height: 350px"
         >
           <gmap-circle
             :options="{fillColor: 'green', strokeColor: 'green'}"
@@ -60,8 +59,8 @@ export default {
       AdminService.editZone({
         lat: this.zone.lat,
         lng: this.zone.lng,
-        radius: this.zone.radius,
-      },this.zone.id)
+        radius: this.zone.radius
+      }, this.zone.id)
         .then(() => {
           this.$router.push({ name: 'show-zone', id: this.zone.id })
         })

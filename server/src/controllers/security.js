@@ -2,7 +2,7 @@
 
 const router = require('express').Router()
 const { asyncMiddleware, validateMiddleware, checkAuthenticated } = require('utils/middlewares')
-const { User, Admin } = require('models')
+const { User } = require('models')
 const bcrypt = require('bcrypt')
 const { NotFoundError } = require('errors')
 const { pepperAdd } = require('utils/security')
@@ -30,22 +30,9 @@ router.post('/login',
     if (!passwordCorrect) {
       throw new NotFoundError(`User with matching email and password not found`)
     }
-    const admin = await Admin.findOne({
-      include: [
-        {
-          model: User,
-          where: {
-            id: user.id
-          }
-        }
-      ]
-    })
-    let newCookie
-    if (admin) {
-      newCookie = await cookieTracker.cookieCreate(admin)
-    } else {
-      newCookie = await cookieTracker.cookieCreate(user)
-    }
+
+    let newCookie = await cookieTracker.cookieCreate(user)
+
     logger.debug('login -> setting cookie %s = %s with params %j', cookieName, newCookie, cookieConfig)
     res.cookie(cookieName, newCookie, cookieConfig)
     res.json(user)

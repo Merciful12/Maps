@@ -1,5 +1,5 @@
 const express = require('express')
-const { User, Marker, Admin, AvailableZone } = require('models')
+const { User, Marker, AvailableZone } = require('models')
 const { NotFoundError } = require('errors')
 const {
   asyncMiddleware,
@@ -10,7 +10,7 @@ const {
 const router = new express.Router()
 
 router.get('/',
-  checkAuthenticated(Admin),
+  checkAuthenticated('admin'),
   validateMiddleware('emptySchema'),
   asyncMiddleware(async (req, res) => {
     const users = await User.findAll()
@@ -25,7 +25,7 @@ router.get('/',
   }))
 
 router.get('/users/:id',
-  checkAuthenticated(Admin),
+  checkAuthenticated('admin'),
   validateMiddleware('emptySchemaWithId'),
   asyncMiddleware(async ({ params: { id } }, res) => {
     const user = await User.findById(id, {
@@ -40,7 +40,7 @@ router.get('/users/:id',
   }))
 
 router.put('/users/:id',
-  checkAuthenticated(Admin),
+  checkAuthenticated('admin'),
   validateMiddleware('editUserAdmin'),
   asyncMiddleware(async ({ body: userData, params: { id } }, res) => {
     const user = await User.update(userData, {
@@ -55,7 +55,7 @@ router.put('/users/:id',
   }))
 
 router.post('/markers',
-  checkAuthenticated(Admin),
+  checkAuthenticated('admin'),
   validateMiddleware('createMarkerAdmin'),
   asyncMiddleware(async ({ body: markerData }, res) => {
     const marker = await Marker.create(markerData)
@@ -63,7 +63,7 @@ router.post('/markers',
   }))
 
 router.put('/markers/:id',
-  checkAuthenticated(Admin),
+  checkAuthenticated('admin'),
   validateMiddleware('editMarkerAdmin'),
   asyncMiddleware(async ({ body: markerData, params: { id } }, res) => {
     const marker = await Marker.update(markerData, {
@@ -78,7 +78,7 @@ router.put('/markers/:id',
   }))
 
 router.get('/markers/:id',
-  checkAuthenticated(Admin),
+  checkAuthenticated('admin'),
   validateMiddleware('emptySchemaWithId'),
   asyncMiddleware(async ({ params: { id } }, res) => {
     const marker = await Marker.findById(id)
@@ -89,7 +89,7 @@ router.get('/markers/:id',
   }))
 
 router.get('/markers',
-  checkAuthenticated(Admin),
+  checkAuthenticated('admin'),
   validateMiddleware('emptySchemaWithId'),
   asyncMiddleware(async (req, res) => {
     const markers = await Marker.findAll()
@@ -97,7 +97,7 @@ router.get('/markers',
   }))
 
 router.post('/zones',
-  checkAuthenticated(Admin),
+  checkAuthenticated('admin'),
   validateMiddleware('createZone'),
   asyncMiddleware(async ({ body: zoneData }, res) => {
     const zone = await AvailableZone.create(zoneData)
@@ -105,7 +105,7 @@ router.post('/zones',
   }))
 
 router.put('/zones/:id',
-  checkAuthenticated(Admin),
+  checkAuthenticated('admin'),
   validateMiddleware('editZone'),
   asyncMiddleware(async ({ body: zoneData, params: { id } }, res) => {
     const zone = await AvailableZone.update(zoneData, {
@@ -120,7 +120,7 @@ router.put('/zones/:id',
   }))
 
 router.get('/zones/:id',
-  checkAuthenticated(Admin),
+  checkAuthenticated('admin'),
   validateMiddleware('emptySchemaWithId'),
   asyncMiddleware(async ({ params: { id } }, res) => {
     const zone = await AvailableZone.findById(id)

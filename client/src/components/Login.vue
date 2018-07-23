@@ -55,7 +55,9 @@ export default {
         password: this.password
       })
         .then(response => {
-          this.$router.push({ name: 'index' })
+          this.$store.dispatch('setUser', response.data)
+          const nextRoute = (response.data.role === 'user') ? 'profile-show' : 'home-admin'
+          this.$router.push({ name: nextRoute })
         })
         .catch(err => {
           this.errors.push(err.response.data.message)

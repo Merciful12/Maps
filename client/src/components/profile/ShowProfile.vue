@@ -14,8 +14,7 @@
         <gmap-map
           :center="this.user.Marker"
           :zoom="11"
-          style="height: 350px"
-          class="w-100"
+          class="w-100 map"
         >
           <gmap-marker
             :position="this.user.Marker"

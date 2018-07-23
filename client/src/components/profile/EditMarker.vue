@@ -17,11 +17,10 @@
           <li><b>lng:</b> {{ marker.lng }}</li>
         </ul>
         <gmap-map
-          class="mt-4 w-100"
+          class="mt-4 w-100 map"
           @click.prevent:="setMarker"
           :center="marker"
           :zoom="11"
-          style="height: 350px"
         >
           <gmap-circle
             :options="{fillColor: 'green', strokeColor: 'green'}"

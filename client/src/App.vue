@@ -18,6 +18,10 @@ export default {
 </script>
 
 <style>
+.map {
+  height: 350px;
+}
+
 .content {
   margin-top: 100px;
 }

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <template v-if="marker">
+    <template v-if="$store.state.user">
       <label>
       <gmap-autocomplete
         @place_changed="setPlace"
@@ -17,11 +17,10 @@
           <li><b>lng:</b> {{ marker.lng }}</li>
         </ul>
         <gmap-map
-          class="mt-4 w-100"
+          class="mt-4 w-100 map"
           @click.prevent:="setMarker"
           :center="{lat: 0, lng: 0}"
           :zoom="2"
-          style="height: 350px"
         >
           <gmap-circle
             :options="{fillColor: 'green', strokeColor: 'green'}"
@@ -36,12 +35,12 @@
             :position="this.marker"
           ></gmap-marker>
         </gmap-map>
-      <b-button class="my-4"
-                @click="save"
-                variant="success"
-                >Save
-      </b-button>
-    </template>
+        <b-button class="my-4"
+                  @click="save"
+                  variant="success"
+                  >Save
+        </b-button>
+      </template>
     <b-alert v-for="(error, i) in errors"
             :key="i"
             variant="danger"
@@ -70,7 +69,7 @@ export default {
   methods: {
     save () {
       if (this.errors.length) return
-      
+
       MarkerService.create(this.marker)
         .then(() => {
           this.$router.push({ name: 'profile-show' })

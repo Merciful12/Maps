@@ -4,12 +4,12 @@
     <b-navbar-brand><router-link :to="{ name: 'index' }">Maps</router-link></b-navbar-brand>
     <b-collapse is-nav id="nav_collapse">
       <b-navbar-nav>
-        <b-nav-item :to="{ name: 'profile-show' }">Profile</b-nav-item>
-        <b-nav-item :to="{ name: 'home-admin' }">Admin</b-nav-item>
+        <b-nav-item v-if="isLoggedIn" :to="{ name: 'profile-show' }">Profile</b-nav-item>
+        <b-nav-item v-if="userRole === 'admin'" :to="{ name: 'home-admin' }">Admin</b-nav-item>
       </b-navbar-nav>
       <b-navbar-nav class="ml-auto">
-        <b-nav-item :to="{ name: 'login' }">Login</b-nav-item>
-        <b-nav-item @click="logout">Logout</b-nav-item>
+        <b-nav-item v-if="!isLoggedIn"  :to="{ name: 'login' }">Login</b-nav-item>
+        <b-nav-item v-else  @click="logout">Logout</b-nav-item>
       </b-navbar-nav>
     </b-collapse>
   </b-navbar>
@@ -23,12 +23,21 @@ export default {
     logout () {
       AuthService.logout()
         .then(() => {
-          this.$router.push({ name: 'index' })
+          this.$store.dispatch('setUser', null)
+          this.$router.push({ name: 'login' })
         })
         .catch((err) => {
           console.log(err.response.data.message)
           this.$router.push({ name: 'index' })
         })
+    }
+  },
+  computed: {
+    isLoggedIn () {
+      return this.$store.state.user !== null
+    },
+    userRole () {
+      return this.$store.state.user && this.$store.state.user.role
     }
   }
 }
