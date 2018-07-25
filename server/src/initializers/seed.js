@@ -42,8 +42,8 @@ const initializerSeed = async () => {
     }
     for (let i = 0; i < numMarkers; i++) {
       const markerData = {
-        lat: chance.latitude({min: 51, max: 52}),
-        lng: chance.longitude({min: 39, max: 40})
+        lat: chance.latitude({min: 51.659174, max: 51.66}),
+        lng: chance.longitude({min: 39.19477, max: 39.1949})
       }
       users[i].createMarker(markerData, { save: false })
       await users[i].save({ transaction })
