@@ -26,7 +26,7 @@ const initializerSeed = async () => {
 
     await User.create(config.get('db.sampleUser'), { transaction })
 
-    const zone = AvailableZone.create(config.get('db.sampleZone'), { transaction })
+    const zone = await AvailableZone.create(config.get('db.sampleZone'), { transaction })
 
     const users = []
     for (let i = 0; i < numUsers; i++) {
