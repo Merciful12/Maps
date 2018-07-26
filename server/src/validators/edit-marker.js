@@ -12,8 +12,13 @@ const schema = {
         },
         lng: {
           type: 'number'
+        },
+        zoneId: {
+          type: 'integer',
+          minimum: 1
         }
-      }
+      },
+      required: ['zoneId']
     },
     params: {
       $ref: 'emptyObject'

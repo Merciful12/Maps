@@ -11,6 +11,7 @@
               </router-link>
             </li>
           </ul>
+          <b-button class="mb-4" :to="{ name: 'register-admin' }">Add</b-button>
           <h1>Markers:</h1>
           <ul>
             <li v-for="marker in markers" :key="marker.userId">

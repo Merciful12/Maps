@@ -3,26 +3,29 @@
     <b-row align-h="center">
       <b-col md="5">
         <b-form @submit.prevent="submit">
+          <b-form-group>
             <b-form-input type="email"
                           v-model="email"
                           required
                           placeholder="Enter email">
             </b-form-input>
-
+          </b-form-group>
+          <b-form-group>
             <b-form-input type="password"
                           v-model="password"
                           required
                           placeholder="Enter password">
             </b-form-input>
-          <b-button type="submit" variant="primary">Register</b-button>
+          </b-form-group>
+          <b-button type="submit" class="my-4" variant="primary">Register</b-button>
         </b-form>
         <b-alert v-for="(error, i) in errors"
-            :key="i"
-            variant="danger"
-            :show="errors.length > 0"
-            >
-            {{ error }}
-    </b-alert>
+        :key="i"
+        variant="danger"
+        :show="errors.length > 0"
+        >
+        {{ error }}
+        </b-alert>
       </b-col>
     </b-row>
   </b-container>
@@ -51,8 +54,8 @@ export default {
         email: this.email,
         password: this.password
       })
-        .then(() => {
-          this.$router.push({name: 'index'})
+        .then(response => {
+          this.$router.push({ name: 'login' })
         })
         .catch(err => {
           this.errors.push(err.response.data.message)

@@ -16,6 +16,11 @@
             :radius="zone.radius"
           >
           </gmap-circle>
+          <gmap-marker
+            v-for="(marker, index) in zone.Markers" :key="index"
+            :position="marker"
+            >
+          </gmap-marker>
         </gmap-map>
     <b-button @click="save" variant="success">Save</b-button>
     <b-alert v-for="(error, i) in errors"

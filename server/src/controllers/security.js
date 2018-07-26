@@ -4,7 +4,7 @@ const router = require('express').Router()
 const { asyncMiddleware, validateMiddleware, checkAuthenticated } = require('utils/middlewares')
 const { User } = require('models')
 const bcrypt = require('bcrypt')
-const { NotFoundError } = require('errors')
+const { NotFoundError, ConflictError } = require('errors')
 const { pepperAdd } = require('utils/security')
 const { cookieTracker } = require('services')
 const config = require('config')
@@ -46,6 +46,46 @@ router.post('/logout',
     cookieTracker.cookieRemove(req.cookies[cookieName])
     res.clearCookie(cookieName)
     res.status(NO_CONTENT).send()
+  })
+)
+
+router.post('/register',
+  validateMiddleware('login'),
+  asyncMiddleware(async (req, res) => {
+    const { email, password } = req.body
+    const user = await User.findOne({
+      where: {
+        email: email
+      }
+    })
+    if (user) {
+      throw new ConflictError('Email already in use')
+    }
+    const newUser = await User.create({
+      email,
+      password
+    })
+    res.json(newUser)
+  })
+)
+router.post('/admin/register',
+  validateMiddleware('loginAdmin'),
+  asyncMiddleware(async (req, res) => {
+    const { email, password, role } = req.body
+    const user = await User.findOne({
+      where: {
+        email: email
+      }
+    })
+    if (user) {
+      throw new ConflictError('Email already in use')
+    }
+    const newUser = await User.create({
+      email,
+      password,
+      role
+    })
+    res.json(newUser)
   })
 )
 

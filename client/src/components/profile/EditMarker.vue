@@ -34,7 +34,7 @@
           >
           </gmap-circle>
           <gmap-marker
-            :position="this.marker"
+            :position="marker"
           ></gmap-marker>
         </gmap-map>
       <b-button class="my-4"
@@ -61,8 +61,7 @@ export default {
   created () {
     MarkerService.my()
       .then(response => {
-        this.marker = response.data.marker
-        this.zones = response.data.zones
+        this.marker = response.data
       })
       .catch(err => {
         this.errors.push(err.response.data.message)
@@ -70,12 +69,11 @@ export default {
   },
   methods: {
     save () {
+      if (!this.marker.zoneId) this.errors.push('Cannot create marker here')
+
       if (this.errors.length) return
 
-      MarkerService.edit({
-        lng: this.marker.lng,
-        lat: this.marker.lat
-      })
+      MarkerService.edit(this.marker)
         .then(() => {
           this.$router.push({ name: 'profile-show' })
         })

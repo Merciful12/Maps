@@ -6,7 +6,7 @@
           <h4><b>Name:</b> {{ user.name || 'has not yet' }}</h4>
           <h4><b>Email:</b> {{ user.email || 'has not yet' }}</h4>
           <h4><b>Age:</b> {{ user.age || 'has not yet' }}</h4>
-          <!-- <b-button class="my-4" :to="{name: 'profile-edit'}" variant="warning">Edit profile</b-button> -->
+          <b-button class="my-4" :to="{name: 'edit-user', params: {id: user.id}}" variant="warning">Edit user</b-button>
           <hr>
           <template v-if="user.Marker">
             <ul><h4><b>Location:</b></h4>
@@ -14,18 +14,16 @@
             <li><b>lng:</b> {{ user.Marker.lng }}</li>
             </ul>
             <gmap-map
-              :center="this.user.Marker"
+              :center="user.Marker"
               :zoom="11"
               class="w-100 map"
             >
               <gmap-marker
-                :position="this.user.Marker"
+                :position="user.Marker"
               ></gmap-marker>
             </gmap-map>
-            <!-- <b-button class="my-4" :to="{name: 'marker-edit'}" variant="warning">Edit marker</b-button> -->
           </template>
           <h4 v-else>user doesnt have a marker yet</h4>
-          <!-- <b-button v-else class="my-4" :to="{name: 'marker-create'}" variant="warning">Add marker</b-button> -->
         </template>
         <b-alert v-for="(error, i) in errors"
                 :key="i"

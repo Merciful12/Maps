@@ -32,7 +32,7 @@
           </gmap-circle>
           <gmap-marker
             v-if="marker"
-            :position="this.marker"
+            :position="marker"
           ></gmap-marker>
         </gmap-map>
         <b-button class="my-4"
@@ -52,20 +52,10 @@
 </template>
 
 <script>
-import ZoneService from '@/services/ZoneService'
 import MarkerService from '@/services/MarkerService'
 import { markerHandler } from '@/mixins/markerHandler'
 export default {
   mixins: [markerHandler],
-  created () {
-    ZoneService.list()
-      .then(response => {
-        this.zones = response.data
-      })
-      .catch(err => {
-        this.errors.push(err.response.data.message)
-      })
-  },
   methods: {
     save () {
       if (this.errors.length) return

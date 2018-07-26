@@ -123,7 +123,24 @@ router.get('/zones/:id',
   checkAuthenticated('admin'),
   validateMiddleware('emptySchemaWithId'),
   asyncMiddleware(async ({ params: { id } }, res) => {
-    const zone = await AvailableZone.findById(id)
+    const zone = await AvailableZone.findById(id, {
+      include: [{model: Marker}]
+    })
+    if (!zone) {
+      throw new NotFoundError(`zone ${id} not found`)
+    }
+    res.json(zone)
+  }))
+
+router.delete('/zones/:id',
+  checkAuthenticated('admin'),
+  validateMiddleware('emptySchemaWithId'),
+  asyncMiddleware(async ({ params: { id } }, res) => {
+    const zone = await AvailableZone.destroy({
+      where: {
+        id
+      }
+    })
     if (!zone) {
       throw new NotFoundError(`zone ${id} not found`)
     }

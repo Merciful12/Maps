@@ -1,6 +1,16 @@
 import { validateMarker } from '@/validators/validators'
+import ZoneService from '@/services/ZoneService'
 
 export const markerHandler = {
+  created () {
+    ZoneService.list()
+      .then(response => {
+        this.zones = response.data
+      })
+      .catch(err => {
+        this.errors.push(err.response.data.message)
+      })
+  },
   data () {
     return {
       marker: null,
@@ -15,11 +25,15 @@ export const markerHandler = {
         lng: place.geometry.location.lng()
       }
       this.errors = []
-      if (!validateMarker(tempMarker, this.zones) &&
+      const zone = validateMarker(tempMarker, this.zones)
+      if (!zone &&
       this.errors.push('Cannot create marker here')) {
         return
       }
-      this.marker = tempMarker
+      this.marker = {
+        ...tempMarker,
+        zoneId: zone.id
+      }
     },
     setMarker (point) {
       const tempMarker = {
@@ -27,11 +41,15 @@ export const markerHandler = {
         lng: point.latLng.lng()
       }
       this.errors = []
-      if (!validateMarker(tempMarker, this.zones) &&
+      const zone = validateMarker(tempMarker, this.zones)
+      if (!zone &&
       this.errors.push('Cannot create marker here')) {
         return
       }
-      this.marker = tempMarker
+      this.marker = {
+        ...tempMarker,
+        zoneId: zone.id
+      }
     },
     geoLocate () {
       this.errors = []
@@ -40,11 +58,15 @@ export const markerHandler = {
           lat: position.coords.latitude,
           lng: position.coords.longitude
         }
-        if (!validateMarker(tempMarker, this.zones) &&
+        const zone = validateMarker(tempMarker, this.zones)
+        if (!zone &&
         this.errors.push('Cannot create marker here')) {
           return
         }
-        this.marker = tempMarker
+        this.marker = {
+          ...tempMarker,
+          zoneId: zone.id
+        }
       })
     }
   }

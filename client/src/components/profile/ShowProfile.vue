@@ -6,21 +6,25 @@
       <h4><b>Age:</b> {{ user.age }}</h4>
       <b-button class="my-4" :to="{name: 'profile-edit'}" variant="warning">Edit profile</b-button>
       <hr>
-      <template v-if="user.Marker">
+      <template v-if="user.Marker && user.Marker.zoneId">
         <ul><h4><b>Location:</b></h4>
         <li><b>lat:</b> {{ user.Marker.lat }}</li>
         <li><b>lng:</b> {{ user.Marker.lng }}</li>
         </ul>
         <gmap-map
-          :center="this.user.Marker"
+          :center="user.Marker"
           :zoom="11"
           class="w-100 map"
         >
           <gmap-marker
-            :position="this.user.Marker"
+            :position="user.Marker"
           ></gmap-marker>
         </gmap-map>
         <b-button class="my-4" :to="{name: 'marker-edit'}" variant="warning">Edit marker</b-button>
+      </template>
+      <template v-else-if="user.Marker && !user.Marker.zoneId">
+        <h5>Your marker's zone has changed. You need to set new marker</h5>
+        <b-btn class="mt-3" variant="success" :to="{name: 'marker-edit'}">set new marker</b-btn>
       </template>
       <b-button v-else class="my-4" :to="{name: 'marker-create'}" variant="warning">Add marker</b-button>
     </template>

@@ -6,5 +6,8 @@ export default {
   },
   logout () {
     return Api().post('security/logout')
+  },
+  register (credentials) {
+    return Api().post('security/register', credentials)
   }
 }

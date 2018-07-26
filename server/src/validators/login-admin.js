@@ -7,18 +7,18 @@ const schema = {
       type: 'object',
       additionalProperties: false,
       properties: {
-        lat: {
-          type: 'number'
+        email: {
+          type: 'string',
+          format: 'email'
         },
-        lng: {
-          type: 'number'
+        password: {
+          type: 'string'
         },
-        zoneId: {
-          type: 'integer',
-          minimum: 1
+        role: {
+          type: 'string'
         }
       },
-      required: ['lat', 'lng', 'zoneId']
+      required: ['password', 'email', 'role']
     },
     params: {
       $ref: 'emptyObject'

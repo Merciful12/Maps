@@ -18,8 +18,21 @@
             :radius="zone.radius"
           >
           </gmap-circle>
+          <gmap-marker
+            v-for="(marker, index) in zone.Markers" :key="index"
+            :position="marker"
+            >
+          </gmap-marker>
         </gmap-map>
         <b-button :to="{ name: 'edit-zone', id: zone.id }" variant="warning">Edit</b-button>
+        <b-button @click="canDelete" variant="danger">Delete</b-button>
+        <b-modal ref="confirmModal" hide-footer title="Deleting zone">
+          <div class="d-block text-center">
+            <h5>The zone has markers. Are you sure to delete?</h5>
+          </div>
+          <b-btn class="mt-3" variant="danger" @click="deleteZone">Delete</b-btn>
+          <b-btn class="mt-3 ml-auto" variant="primary" @click="hideModal">Cancel</b-btn>
+        </b-modal>
     </template>
 
         <b-alert v-for="(error, i) in errors"
@@ -49,6 +62,27 @@ export default {
     return {
       zone: null,
       errors: []
+    }
+  },
+  methods: {
+    canDelete () {
+      if (this.zone.Markers.length) {
+        this.$refs.confirmModal.show()
+      } else {
+        this.deleteZone()
+      }
+    },
+    hideModal () {
+      this.$refs.confirmModal.hide()
+    },
+    deleteZone () {
+      AdminService.deleteZone(this.zone.id)
+        .then(() => {
+          this.$router.push({ name: 'home-admin' })
+        })
+        .catch(err => {
+          this.errors.push(err.response.data.message)
+        })
     }
   }
 }

@@ -35,5 +35,5 @@ class MarkerInAvailableZone {
 
 export const validateMarker = (marker, zones) => {
   const checkerMarker = new MarkerInAvailableZone(marker)
-  return zones.some(checkerMarker.check.bind(checkerMarker))
+  return zones.find(checkerMarker.check.bind(checkerMarker))
 }

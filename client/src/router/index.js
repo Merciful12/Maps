@@ -16,6 +16,7 @@ import EditUserAdmin from '@/components/admin/EditUser'
 import ShowZone from '@/components/admin/ShowZone'
 import EditZone from '@/components/admin/EditZone'
 import CreateZone from '@/components/admin/CreateZone'
+import RegisterAdmin from '@/components/admin/RegisterAdmin'
 import store from '@/store/store'
 
 Vue.use(Router)
@@ -69,6 +70,11 @@ const router = new Router({
       path: '/admin/',
       name: 'home-admin',
       component: HomeAdmin
+    },
+    {
+      path: '/admin/register',
+      name: 'register-admin',
+      component: RegisterAdmin
     },
     {
       path: '/admin/user/:id',

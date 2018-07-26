@@ -6,6 +6,7 @@ const emptySchema = require('./empty-schema')
 const urlWithId = require('./url-with-id')
 
 const login = require('./login')
+const loginAdmin = require('./login-admin')
 
 const user = require('./user')
 const editUser = require('./edit-user')
@@ -27,6 +28,7 @@ module.exports = {
   urlWithId,
 
   login,
+  loginAdmin,
 
   user,
   editUser,

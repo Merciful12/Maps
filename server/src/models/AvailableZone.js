@@ -3,6 +3,8 @@
 const sequelize = require('utils/sequelize')
 const Sequelize = require('sequelize')
 
+const Marker = require('./Marker')
+
 const schema = {
   lat: {
     type: Sequelize.DOUBLE
@@ -18,5 +20,7 @@ const schema = {
 const options = {}
 
 const AvailableZone = sequelize.define('AvailableZone', schema, options)
+
+AvailableZone.hasMany(Marker, { foreignKey: 'zoneId' })
 
 module.exports = AvailableZone
