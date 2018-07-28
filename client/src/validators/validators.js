@@ -13,27 +13,27 @@ export const validateAge = (age) => {
   return re.test(age)
 }
 
-class MarkerInAvailableZone {
-  constructor (marker) {
+const MarkerInAvailableZone = {
+  setMarker (marker) {
     this.marker = marker
+  },
+  rad (x) { return x * Math.PI / 180 },
+  check () {
+    return (zone) => {
+      const R = 6378137 // Earth’s mean radius in meter
+      const dLat = this.rad(zone.lat - this.marker.lat)
+      const dLong = this.rad(zone.lng - this.marker.lng)
+      const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(this.rad(this.marker.lat)) * Math.cos(this.rad(zone.lat)) *
+        Math.sin(dLong / 2) * Math.sin(dLong / 2)
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+      const d = R * c // the distance in meter
+      return (zone.radius - d) >= 0
+    }
   }
-
-  check (zone) {
-    const R = 6378137 // Earth’s mean radius in meter
-    const dLat = this.rad(zone.lat - this.marker.lat)
-    const dLong = this.rad(zone.lng - this.marker.lng)
-    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(this.rad(this.marker.lat)) * Math.cos(this.rad(zone.lat)) *
-      Math.sin(dLong / 2) * Math.sin(dLong / 2)
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
-    const d = R * c // the distance in meter
-    return (zone.radius - d) >= 0
-  }
-
-  rad (x) { return x * Math.PI / 180 }
 }
 
 export const validateMarker = (marker, zones) => {
-  const checkerMarker = new MarkerInAvailableZone(marker)
-  return zones.find(checkerMarker.check.bind(checkerMarker))
+  MarkerInAvailableZone.setMarker(marker)
+  return zones.find(MarkerInAvailableZone.check())
 }

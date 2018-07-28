@@ -37,6 +37,7 @@
         </gmap-map>
         <b-button class="my-4"
                   @click="save"
+                  :disabled="!canSave"
                   variant="success"
                   >Save
         </b-button>
@@ -58,8 +59,6 @@ export default {
   mixins: [markerHandler],
   methods: {
     save () {
-      if (this.errors.length) return
-
       MarkerService.create(this.marker)
         .then(() => {
           this.$router.push({ name: 'profile-show' })

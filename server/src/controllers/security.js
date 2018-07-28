@@ -69,6 +69,7 @@ router.post('/register',
   })
 )
 router.post('/admin/register',
+  checkAuthenticated('admin'),
   validateMiddleware('loginAdmin'),
   asyncMiddleware(async (req, res) => {
     const { email, password, role } = req.body

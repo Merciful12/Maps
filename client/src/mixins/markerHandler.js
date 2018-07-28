@@ -24,22 +24,25 @@ export const markerHandler = {
         lat: place.geometry.location.lat(),
         lng: place.geometry.location.lng()
       }
-      this.errors = []
-      const zone = validateMarker(tempMarker, this.zones)
-      if (!zone &&
-      this.errors.push('Cannot create marker here')) {
-        return
-      }
-      this.marker = {
-        ...tempMarker,
-        zoneId: zone.id
-      }
+      this.validateAndSetMarker(tempMarker)
     },
     setMarker (point) {
       const tempMarker = {
         lat: point.latLng.lat(),
         lng: point.latLng.lng()
       }
+      this.validateAndSetMarker(tempMarker)
+    },
+    geoLocate () {
+      navigator.geolocation.getCurrentPosition(position => {
+        const tempMarker = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        }
+        this.validateAndSetMarker(tempMarker)
+      })
+    },
+    validateAndSetMarker (tempMarker) {
       this.errors = []
       const zone = validateMarker(tempMarker, this.zones)
       if (!zone &&
@@ -50,24 +53,11 @@ export const markerHandler = {
         ...tempMarker,
         zoneId: zone.id
       }
-    },
-    geoLocate () {
-      this.errors = []
-      navigator.geolocation.getCurrentPosition(position => {
-        const tempMarker = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        }
-        const zone = validateMarker(tempMarker, this.zones)
-        if (!zone &&
-        this.errors.push('Cannot create marker here')) {
-          return
-        }
-        this.marker = {
-          ...tempMarker,
-          zoneId: zone.id
-        }
-      })
+    }
+  },
+  computed: {
+    canSave () {
+      return this.marker && this.marker.zoneId && !this.errors.length
     }
   }
 }

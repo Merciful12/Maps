@@ -39,6 +39,7 @@
         </gmap-map>
       <b-button class="my-4"
                 @click="save"
+                :disabled="!canSave"
                 variant="success"
                 >Save
       </b-button>
@@ -69,11 +70,11 @@ export default {
   },
   methods: {
     save () {
-      if (!this.marker.zoneId) this.errors.push('Cannot create marker here')
-
-      if (this.errors.length) return
-
-      MarkerService.edit(this.marker)
+      MarkerService.edit({
+        lng: this.marker.lng,
+        lat: this.marker.lat,
+        zoneId: this.marker.zoneId
+      })
         .then(() => {
           this.$router.push({ name: 'profile-show' })
         })
